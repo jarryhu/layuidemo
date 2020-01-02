@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.layui.demo.mapper.UserMapper">
+    <select id="getUserList" resultType="com.test.layui.demo.pojo.User">
+        <!--        select * from user where and 1=1-->
+        <!--        <if test="name!=null or name!=''">-->
+        <!--          and name=#{name}-->
+        <!--        </if>-->
+        <!--        <if test="major!=null or major!=''">-->
+        <!--           and  major=#{major}-->
+        <!--        </if>-->
+
+        select * from user
+        <where>
+            <if test="name!=null and name!=''">
+                name like concat (concat('%',#{name}),'%')
+            </if>
+            <if test="major!=null and major!=''">
+                and major=#{major}
+            </if>
+        </where>
+    </select>
+
+    <select id="Login" parameterType="com.test.layui.demo.pojo.User" resultType="com.test.layui.demo.pojo.User">
+           select  * from user where name=#{name} and password=#{password}
+    </select>
+
+    <delete id="deleteUserByid" parameterType="java.lang.Integer">
+        delete  from user where id=#{id}
+    </delete>
+
+    <insert id="register" parameterType="user">
+        insert into user value (null,#{name},#{age},#{major},#{password},#{address},#{headpath})
+
+    </insert>
+
+    <sql id="common1"> select  * from user </sql>
+</mapper>
